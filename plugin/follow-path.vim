@@ -45,7 +45,7 @@ function! s:follow_directory()
 	execute 'view' b:destination_path
 
 	" Some remapping to make transition seamless.
-	command -bang -buffer WBD write!|bdelete
+	command! -bang -buffer WBD write!|bdelete
 	ca <buffer> q bd
 	ca <buffer> wq WBD
 endfunction
