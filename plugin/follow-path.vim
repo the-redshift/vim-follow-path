@@ -1,5 +1,5 @@
 " =============================================================================
-" File: plugin/follow-directory.vim
+" File: plugin/follow-path.vim
 " Description: Select text, treat it as a system path and follow it.
 " Author: Jakub Warumzer <github.com/JakubWarumzer>
 " Comment: Primarily done to deal with ansible playbooks

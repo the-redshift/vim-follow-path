@@ -1,6 +1,6 @@
 # Follow Path
 
-Simple plugin made to marginally ease day-to-day work. Select text, press <C-e>
+Simple plugin made to marginally ease day-to-day work. Select text, press Ctrl+e
 and if it's either an ansible role in expected directory, or an absolute path,
 it will load its content to the current buffer. 
 
