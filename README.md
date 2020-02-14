@@ -10,7 +10,7 @@ vim-follow-path is compatible with all major plugin managers. To install it usin
 Vundle, add
 
 ```vim
-Bundle 'JakubWarumzer/vim-follow-path'
+Bundle 'the-redshift/vim-follow-path'
 ```
 
 to your `.vimrc`.
