@@ -22,27 +22,48 @@ endfunction
 function! s:follow_directory()
 	" Getting selected text
 	let b:selection = s:get_visual_selection()
-	
-	" Priorities:
-	" 1. Ansible role path (sadly gotta check both .yml/.yaml)
-	" 2. Absolute path
-	let b:ansible_path_yml = "roles/" . s:get_visual_selection() . "/tasks/main.yml"
-	let b:ansible_path_yaml = "roles/" . s:get_visual_selection() . "/tasks/main.yaml"
-	let b:absolute_path = b:selection
 
-	if filereadable(b:ansible_path_yml)
-		let b:destination_path = b:ansible_path_yml
-	elseif filereadable(b:ansible_path_yaml)
-		let b:destination_path = b:ansible_path_yaml
-	elseif filereadable(b:absolute_path)
-		let b:destination_path = b:absolute_path
-	else
+	" Priorities:
+	" 1. Working directory path, looking for ansible role match
+	" 2. Ansible galaxy role paths
+	" 3. Absolute path
+
+	let b:possible_paths = [
+		\"roles/" . s:get_visual_selection(),
+		\$HOME . "/.ansible/roles/" . s:get_visual_selection(),
+		\"/usr/share/ansible/roles/" . s:get_visual_selection(),
+		\"/etc/ansible/roles/" . s:get_visual_selection(),
+		\s:get_visual_selection(),
+	\]
+
+	let b:possible_path_suffixes = [
+		\"/tasks/main.yml",
+		\"/tasks/main.yaml",
+		\"",
+	\]
+
+	let b:final_path = ""
+	for path in b:possible_paths
+		for suffix in b:possible_path_suffixes
+			let b:path = path . suffix
+			if filereadable(b:path)
+				let b:final_path = b:path
+				break
+			endif
+		endfor
+
+		if b:final_path != ""
+			break
+		endif
+	endfor
+
+	if b:final_path == ""
 		echomsg "Incorrect path!"
 		return
 	endif
 
 	" ...and we're switching to the view!
-	execute 'view' b:destination_path
+	execute 'view' b:final_path
 
 	" Some remapping to make transition seamless.
 	command! -bang -buffer WBD write!|bdelete
